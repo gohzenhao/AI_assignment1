@@ -8,23 +8,15 @@ import java.util.PriorityQueue;
 public class FindPath {
 	
 	Environment map;
-	String initial;
-	String goal;
-	RoadEntry initialRoad;
-	RoadEntry goalRoad;
-	int cost;
-	int costToNode;
-	int totalCost;
-	
-	
-	
-	public FindPath(Environment inMap,String inInitial,String inGoal){
+	String initialRoad;
+	String goalRoad;
+
+
+	public FindPath(Environment inMap,String inRoad, String inRoad2){
 		
 		this.map = inMap;
-		this.initial = "2Warren";
-		this.goal = "3Durham";
-		compute();
-		System.out.println(cost);
+		this.initialRoad = inRoad;
+		this.goalRoad = inRoad2;
 		
 	}
 	
@@ -41,6 +33,14 @@ public class FindPath {
 	    }
 	  }
 	
+	public Node getStart(){
+		return this.map.findNode("initial");
+	}
+	
+	public Node getEnd(){
+		return this.map.findNode("goal");
+	}
+	
 	protected List constructPath(Node node) {
 	    LinkedList path = new LinkedList();
 	    while (node.parent != null) {
@@ -50,23 +50,34 @@ public class FindPath {
 	    return path;
 	  }
 	
-	public void compute(){
+	public List compute(){
 		
 		PriorityList openList = new PriorityList();
 	    LinkedList closedList = new LinkedList();
-	    ArrayList returnNodes = new ArrayList();
+	    double totalCost = 0;
+	    Node startNode = this.getStart();
+	    Node goalNode = this.getEnd();
+	    
+	    startNode.costFromStart = 0;
+	    openList.add(startNode);
 		
-		initialRoad = map.findRoad("Warren");
-		goalRoad = map.findRoad("Durham");
-		if(initialRoad!=null){
+	    while(!openList.isEmpty()){
+	    	Node currentNode = (Node)openList.removeFirst();
+	    	if(currentNode == goalNode){
+	    		return constructPath(goalNode);
+	    	}
+	    	
+	    	List neighbors = currentNode.getChildren();
+	    	for(int i=0;i<neighbors.size();i++){
+	    		Node neighborNode = (Node)neighbors.get(i);
+		    	boolean isOpen = openList.contains(neighborNode);
+		    	boolean isClosed = closedList.contains(neighborNode);
 
-		}
+	    	}
+	    }
 		
 		
-		
-		
-		
-		
+
 		
 	}
 

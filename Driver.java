@@ -54,9 +54,19 @@ public class Driver {
 		
 		String initialNode = "2Warren";
 		String goalNode = "3Durham";
-		map.generateNodes(); 
-//		findPath = new FindPath(map,initialNode,goalNode);
-		
+		findPath = new FindPath(map,initialNode,goalNode);
+		map.generateNodes();
+		map.addGoals("Warren","Durham");
+		findPath.compute();
+//		for(int i=0;i<map.getNodes().size();i++){
+//			System.out.println("Main node : "+map.getNodes().get(i).junction);
+//			System.out.println("Children:");
+//			for(int u=0;u<map.getNodes().get(i).getChildren().size();u++){
+//				System.out.println(map.getNodes().get(i).getChildren().get(u).junction);
+//				
+//
+//			}
+//		}
 		
 
     }
