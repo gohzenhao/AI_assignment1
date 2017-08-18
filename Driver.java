@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Driver {
@@ -57,7 +58,15 @@ public class Driver {
 		findPath = new FindPath(map,initialNode,goalNode);
 		map.generateNodes();
 		map.addGoals("Warren","Durham");
-		findPath.compute();
+		List result = findPath.compute();
+		if(result!=null){
+			for(int i=0;i<result.size();i++){
+				System.out.println(result.get(i));
+			}
+		}
+		else{
+			System.out.println("gg");
+		}
 //		for(int i=0;i<map.getNodes().size();i++){
 //			System.out.println("Main node : "+map.getNodes().get(i).junction);
 //			System.out.println("Children:");

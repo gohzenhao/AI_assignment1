@@ -57,24 +57,66 @@ public class FindPath {
 	    double totalCost = 0;
 	    Node startNode = this.getStart();
 	    Node goalNode = this.getEnd();
+	    String streetName;
 	    
 	    startNode.costFromStart = 0;
 	    openList.add(startNode);
+	    System.out.println("Added :"+startNode.junction);
 		
 	    while(!openList.isEmpty()){
 	    	Node currentNode = (Node)openList.removeFirst();
+	    	System.out.println("Current Node: "+currentNode.junction);
 	    	if(currentNode == goalNode){
+	    		System.out.println("goalFound");
 	    		return constructPath(goalNode);
+	    		
 	    	}
 	    	
-	    	List neighbors = currentNode.getChildren();
+	    	ArrayList<Node> neighbors = currentNode.getChildren();
+	    	System.out.println(neighbors);
 	    	for(int i=0;i<neighbors.size();i++){
-	    		Node neighborNode = (Node)neighbors.get(i);
+	    		Node neighborNode = neighbors.get(i);
+	    		System.out.println(neighborNode.street);
 		    	boolean isOpen = openList.contains(neighborNode);
 		    	boolean isClosed = closedList.contains(neighborNode);
-
+		    	double costFromStart;
+		    	double costBetweenNode;
+		    	if(currentNode.isPlot){
+		    		System.out.println("1");
+		    		streetName = currentNode.street;
+		    		RoadEntry inRoad = map.findRoad(streetName);
+		    		map.getJuncPosition(streetName, neighborNode);
+		    		System.out.println("Move to :" + neighborNode.street);
+		    		if(neighborNode.isStart){
+		    			costBetweenNode= inRoad.distanceToStartJunc(2);
+		    			
+		    		}
+		    		else{
+		    			costBetweenNode = inRoad.distanceToEndJunc(2);
+		    		}
+		    	}
+		    	else{
+		    		streetName = map.getRoadName(currentNode, neighborNode);
+		    		RoadEntry inRoad = map.findRoad(streetName);
+		    		costBetweenNode = inRoad.roadLength;
+		    		System.out.println("4");
+		    	}
+		    	
+		    	costFromStart = currentNode.costFromStart + costBetweenNode;
+		    	if((!isOpen && !isClosed) || costFromStart < neighborNode.costFromStart){
+		    		neighborNode.parent = currentNode;
+		    		neighborNode.costFromStart = costFromStart;
+		    		if(isClosed){
+		    			closedList.remove(neighborNode);
+		    		}
+		    		if(!isOpen){
+		    			openList.add(neighborNode);
+		    		}
+		    	}
 	    	}
+	    	closedList.add(currentNode);
 	    }
+	    return null;
 		
 		
 

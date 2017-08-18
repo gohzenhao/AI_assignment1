@@ -13,6 +13,8 @@ public class Node{
 	int plotNum;
 	boolean isPlot;
 	boolean isStart;
+	String street;
+	double cost;
 	
 	public Node(String inJunction){
 		
@@ -23,6 +25,14 @@ public class Node{
 		
 	}
 	
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
 	public int getPlotNum(){
 		return this.plotNum;
 	}

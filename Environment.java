@@ -117,6 +117,8 @@ public class Environment {
 		goalNode.setIsPlot();
 		startingNode.setPlotNum(2);
 		goalNode.setPlotNum(3);
+		startingNode.setStreet(startRoad.roadName);
+		goalNode.setStreet(endRoad.roadName);
 		
 		this.nodes.add(startingNode);
 		this.nodes.add(goalNode);
@@ -151,29 +153,43 @@ public class Environment {
 		
 	}
 	
-	
-	
-	public double getCostBetweenNodes(Node node,Node node2){
+	public String getRoadName(Node node, Node node2){
 		
 		String junc1 = node.junction;
 		String junc2 = node2.junction;
+		
 		if(node.junction=="initial"){
-			return 
+			return node.street;
 		}
 		if(node2.junction=="goal"){
-			
+			return node2.street;
 		}
 		for(int i=0;i<this.roads.size();i++){
 			if(this.roads.get(i).startJunc.equals(junc1) && this.roads.get(i).endJunc.equals(junc2)){
-				return this.roads.get(i).roadLength;
+				return this.roads.get(i).roadName;
 			}
 			if(this.roads.get(i).startJunc.equals(junc2) && this.roads.get(i).endJunc.equals(junc1)){
-				return this.roads.get(i).roadLength;
+				return this.roads.get(i).roadName;
 			}
 		}
-		return 0;
+		return "";
+	}
+	
+	public String getPlotStreet(Node node){
+		return node.street;
+	}
+	
+	
+	
+	public void getJuncPosition(String instreet,Node inNode){
 		
-		
+		RoadEntry inRoad = this.findRoad(instreet);
+		if(inRoad.startJunc==inNode.junction){
+			inNode.setStart(true);
+		}
+		else{
+			inNode.setStart(false);;
+		}
 	}
 	
 
