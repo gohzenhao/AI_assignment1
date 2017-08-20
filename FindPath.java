@@ -1,37 +1,26 @@
 package assignment1;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 public class FindPath {
 	
 	Environment map;
-	String initialRoad;
-	String goalRoad;
 
 
-	public FindPath(Environment inMap,String inRoad, String inRoad2){
+
+	public FindPath(Environment inMap){
 		
 		this.map = inMap;
-		this.initialRoad = inRoad;
-		this.goalRoad = inRoad2;
-		
+
+	
 	}
 	
-	public static class PriorityList extends LinkedList {
-
-	    public void add(Comparable object) {
-	      for (int i=0; i<size(); i++) {
-	        if (object.compareTo(get(i)) <= 0) {
-	          add(i, object);
-	          return;
-	        }
-	      }
-	      addLast(object);
-	    }
-	  }
 	
 	public Node getStart(){
 		return this.map.findNode("initial");
@@ -41,80 +30,98 @@ public class FindPath {
 		return this.map.findNode("goal");
 	}
 	
-	protected List constructPath(Node node) {
-	    LinkedList path = new LinkedList();
-	    while (node.parent != null) {
-	      path.addFirst(node);
-	      node = node.parent;
-	    }
-	    return path;
-	  }
+//	protected List constructPath(Node node) {
+//	    LinkedList path = new LinkedList();
+//	    while (node.parent != null) {
+//	      path.addFirst(node);
+//	      node = node.parent;
+//	    }
+//	    return path;
+//	  }
 	
-	public List compute(){
+	Comparator<Node> comparator = new Comparator<Node>() {
+	    @Override
+	    public int compare(Node i, Node j){
+            if(i.costFromStart > j.costFromStart){
+                return 1;
+            }
+
+            else if (i.costFromStart < j.costFromStart){
+                return -1;
+            }
+
+            else{
+                return 0;
+            }
+        }
+	};
+	
+	  protected ArrayList<Node> constructPath(Node node) {
+		  
+		 ArrayList<Node> path = new ArrayList<>();
+
+		    while (node.getParent() != null) {
+		    	
+		 
+		      path.add(node);
+		     	node = node.getParent();
+
+
+		    }
+		    return path;
+
+		  
+		  }
+	
+	public ArrayList<Node> compute(){
 		
-		PriorityList openList = new PriorityList();
-	    LinkedList closedList = new LinkedList();
+		PriorityQueue<Node> openList = new PriorityQueue<Node>(map.getNodes().size(),comparator);
+	    LinkedList explored = new LinkedList();
 	    double totalCost = 0;
 	    Node startNode = this.getStart();
 	    Node goalNode = this.getEnd();
+	    startNode.setCostFromStart(0);
 	    String streetName;
-	    
-	    startNode.costFromStart = 0;
 	    openList.add(startNode);
-	    System.out.println("Added :"+startNode.junction);
-		
+
 	    while(!openList.isEmpty()){
-	    	Node currentNode = (Node)openList.removeFirst();
-	    	System.out.println("Current Node: "+currentNode.junction);
-	    	if(currentNode == goalNode){
-	    		System.out.println("goalFound");
+	    	
+	    	Node current = openList.poll();
+	    	if(current.equals(goalNode)){
+	    		System.out.println("Goal found!");
+	    		System.out.println("Total cost : "+current.costFromStart);
 	    		return constructPath(goalNode);
-	    		
 	    	}
 	    	
-	    	ArrayList<Node> neighbors = currentNode.getChildren();
-	    	System.out.println(neighbors);
-	    	for(int i=0;i<neighbors.size();i++){
-	    		Node neighborNode = neighbors.get(i);
-	    		System.out.println(neighborNode.street);
-		    	boolean isOpen = openList.contains(neighborNode);
-		    	boolean isClosed = closedList.contains(neighborNode);
-		    	double costFromStart;
-		    	double costBetweenNode;
-		    	if(currentNode.isPlot){
-		    		System.out.println("1");
-		    		streetName = currentNode.street;
-		    		RoadEntry inRoad = map.findRoad(streetName);
-		    		map.getJuncPosition(streetName, neighborNode);
-		    		System.out.println("Move to :" + neighborNode.street);
-		    		if(neighborNode.isStart){
-		    			costBetweenNode= inRoad.distanceToStartJunc(2);
-		    			
-		    		}
-		    		else{
-		    			costBetweenNode = inRoad.distanceToEndJunc(2);
-		    		}
-		    	}
-		    	else{
-		    		streetName = map.getRoadName(currentNode, neighborNode);
-		    		RoadEntry inRoad = map.findRoad(streetName);
-		    		costBetweenNode = inRoad.roadLength;
-		    		System.out.println("4");
-		    	}
-		    	
-		    	costFromStart = currentNode.costFromStart + costBetweenNode;
-		    	if((!isOpen && !isClosed) || costFromStart < neighborNode.costFromStart){
-		    		neighborNode.parent = currentNode;
-		    		neighborNode.costFromStart = costFromStart;
-		    		if(isClosed){
-		    			closedList.remove(neighborNode);
-		    		}
-		    		if(!isOpen){
-		    			openList.add(neighborNode);
-		    		}
-		    	}
+	    	for(int i=0;i<current.getAdjencies().size();i++)
+	    	{
+
+	    		Edge edge = current.getAdjencies().get(i);
+	    		Node child = edge.getTarget();
+
+	    		
+	    		boolean isOpen = openList.contains(child);
+	    		boolean isClosed = explored.contains(child);
+	    		double cost = edge.getCost();
+	    		double costFromStart = current.getCostFromStart() + cost;
+	    		
+	    		
+	    		if((!isOpen && !isClosed) || costFromStart < child.getCostFromStart()){
+	    			child.setParent(current);
+
+//	    			totalCost += edge.getCost();
+
+	    			child.costFromStart = costFromStart;
+	    			if(isClosed){
+	    				explored.remove(child);
+	    			}
+	    			if(!isOpen){
+	    				openList.add(child);
+	    			}
+
+	    		}
 	    	}
-	    	closedList.add(currentNode);
+	    	explored.add(current);
 	    }
 	    return null;
 		

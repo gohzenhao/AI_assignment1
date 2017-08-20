@@ -8,30 +8,29 @@ public class Node{
 	
 	String junction;
 	Node parent;
-	ArrayList<Node> children;
 	double costFromStart;
 	int plotNum;
-	boolean isPlot;
-	boolean isStart;
-	String street;
-	double cost;
+	ArrayList<Edge> adjencies;
 	
 	public Node(String inJunction){
 		
 		this.junction = inJunction;
 		this.parent = null;
-		this.children = new ArrayList<>();
-		this.isPlot = false;
+		this.adjencies = new ArrayList<>();
+		this.costFromStart = 0;
 		
 	}
 	
-	public String getStreet() {
-		return street;
+
+	public ArrayList<Edge> getAdjencies() {
+		return adjencies;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+
+	public void setAdjencies(ArrayList<Edge> adjencies) {
+		this.adjencies = adjencies;
 	}
+
 
 	public int getPlotNum(){
 		return this.plotNum;
@@ -39,22 +38,6 @@ public class Node{
 	public void setPlotNum(int inNum){
 		this.plotNum = inNum;
 	}
-	
-	public void setIsPlot(){
-		this.isPlot = !this.isPlot;
-	}
-
-
-
-	public ArrayList<Node> getChildren() {
-		return children;
-	}
-
-
-	public void setChildren(ArrayList<Node> children) {
-		this.children = children;
-	}
-
 
 	public Node getParent() {
 		return parent;
@@ -75,8 +58,8 @@ public class Node{
 		this.junction = junction;
 	}
 	
-	public void addChildren(Node inNode){
-		this.children.add(inNode);
+	public void addChildren(Edge inEdge){
+		this.adjencies.add(inEdge);
 	}
 
 	public double getCostFromStart() {
@@ -86,14 +69,20 @@ public class Node{
 	public void setCostFromStart(double costFromStart) {
 		this.costFromStart = costFromStart;
 	}
-
-	public boolean isStart() {
-		return isStart;
+	
+	public Edge findEdge(Node inNode){
+		
+		for(int i=0;i<this.getAdjencies().size();i++){
+			
+			if(this.getAdjencies().get(i).target.equals(inNode)){
+				return this.getAdjencies().get(i);
+			}
+			
+		}
+		return null;
 	}
 
-	public void setStart(boolean isStart) {
-		this.isStart = isStart;
-	}
+
 	
 	
 
