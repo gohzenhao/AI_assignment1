@@ -1,10 +1,12 @@
 package assignment1;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.FileWriter;
+import java.io.IOException; 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,11 +17,16 @@ public class Driver {
 	
 	public static void main(String[] args) throws IOException{
 		
-		String roadName;
-		String j1;
-		String j2;
-		int roadLength;
-		int nLots;
+		File environmentFile = new File(args[0]+".txt");
+		File queryFile = new File(args[1]+".txt");
+		File outputFile = new File(args[2]+".txt");
+		
+		FileReader fr = null;
+		BufferedReader br = null;
+		FileWriter fw=new FileWriter(outputFile);
+		BufferedWriter bw=new BufferedWriter(fw);
+		String roadName,j1,j2;
+		int roadLength,nLots;
 		RoadEntry newRoad;
 		Environment map = new Environment();
 		FindPath findPath;
@@ -32,145 +39,179 @@ public class Driver {
 		ArrayList<Query> queries = new ArrayList<>();
 		
 //	      long startTime = System.currentTimeMillis();
-		
+		try {
+			//read environment file
+			if(environmentFile.exists())
+			{
+				fr = new FileReader(environmentFile);
+				br = new BufferedReader(fr);
+				String line = br.readLine();
+				try
+				{
+					while(line!=null)
+					{
+						Tokenizer st = new StringTokenizer(line,';');
+						roadName = st.nextToken();
+	                	j1 = st.nextToken();
+	                	j2 = st.nextToken();
+	                	roadLength = Integer.parseInt(st.nextToken());
+	                	nLots = Integer.parseInt(st.nextToken());
+	                	newRoad = new RoadEntry(roadName,j1,j2,roadLength,nLots);
+	                	map.addRoad(newRoad);
+						line = br.readLine();
+					}
+				}
+				catch (IOException e)
+				{
+					System.out.println(e.getMessage());
+				}
+				finally
+				{
+					try// if the file was opened, close it
+					{
+					if (fw != null)
+					fw.close();
+					}
+					catch (IOException ioe)
+					{
+						System.out.println(ioe.getMessage());
+					}
 
+				}
 
+			}
+			//read query file
+			if(queryFile.exists())
+			{
+				fr = new FileReader(queryFile);
+				br = new BufferedReader(fr);
+				String line = br.readLine();
+				try
+				{
+					while(line!=null)
+					{
+						StringTokenizer st = new StringTokenizer(line,';');
+						String initial = st.nextToken()];
+						String goal = st.nextToken();
+						//get initial node
+						for(int i=0;i<initial.length();i++) 
+						{
+							if(Character.isUpperCase(initial.charAt(i))) {
 
-            File f = new File("src/assignment1/environmentFile.txt");
+								startPlot =  Character.getNumericValue(initial.charAt(i-1));
+								initialRoad = initial.substring(i);
+							}
+						}
+						//get goal node
+						for(int i=0;i<goal.length();i++)
+						{
+							if(Character.isUpperCase(goal.charAt(i))){
+								goalPlot = Character.getNumericValue(goal.charAt(i-1));
+								goalRoad = goal.substring(i);
+							}
+						}
+						Query newQuery = new Query(initialRoad,goalRoad,startPlot,goalPlot);
+						queries.add(newQuery);
+						line = br.readLine();
+					}
+				}
+				catch (IOException e)
+				{
+					System.out.println(e.getMessage());
+				}
+				finally
+				{
+					try// if the file was opened, close it
+					{
+					if (fw != null)
+					fw.close();
+					}
+					catch (IOException ioe)
+					{
+						System.out.println(ioe.getMessage());
+					}
 
-//            BufferedReader b = new BufferedReader(new FileReader(f));
-//
-//            String readLine = "";
+				}
 
-            
-            List<String> list = new ArrayList<String>();
-            
-            try {
+			}
+		}
+		catch (IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		finally
+		{
+			try// if the file was opened, close it
+			{
+				if (fr != null)
+				fr.close();
+			}
+			catch (IOException ioe)
+			{
+				System.out.println(ioe.getMessage());
+			}
 
-                Scanner sc = new Scanner(f);
-
-                while (sc.hasNextLine()) {
-                    list.add(sc.nextLine());
-                    
-                }
-                sc.close();
-                for(int i=0;i<list.size();i++){
-                	System.out.println(list.get(i));
-                	String[] parts = list.get(i).split(" ; ");
-
-                	roadName = parts[0];
-                	j1 = parts[1];
-                	j2 = parts[2];
-                	roadLength = Integer.parseInt(parts[3]);
-                	nLots = Integer.parseInt(parts[4]);
-                	newRoad = new RoadEntry(roadName,j1,j2,roadLength,nLots);
-                	map.addRoad(newRoad);
-
-                }
-            } 
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-
-//        		String[] parts= readLine.split(" ; " );
-//        		
-		
-		
-          try{
-            File f1 = new File("src/assignment1/query-simple.txt");
-            
-            List<String> list1 = new ArrayList<String>();
-
-            Scanner sc = new Scanner(f1);
-
-            while (sc.hasNextLine()) {
-                list1.add(sc.nextLine());
-           
-            }
-            sc.close();
-
-            for(int i=0;i<list1.size();i++){
-            	String [] parts = list1.get(i).split(" ; ");
-            	String initial = parts[0];
-            	String goal = parts[parts.length-1];
-
-
-          
-            	    for(int i1=0;i1<initial.length();i1++) {
-            	        if(Character.isUpperCase(initial.charAt(i1))) {
-            	        
-            	        	startPlot =  Character.getNumericValue(initial.charAt(i1-1));
-            	        	initialRoad = initial.substring(i1);
-
-
-            	        }
-            	        
-            	    }
-            	    
-            	    for(int i2=0;i2<goal.length();i2++){
-            	    	if(Character.isUpperCase(goal.charAt(i2))){
-            	    		goalPlot = Character.getNumericValue(goal.charAt(i2-1));
-            	    		goalRoad = goal.substring(i2);
-        
-            	    	}
-            	    }
-            	    
-            	    Query newQuery = new Query(initialRoad,goalRoad,startPlot,goalPlot);
-            	    queries.add(newQuery);
-            	    System.out.println(newQuery.sRoad);
-            	
-            }
-
-
-            	
-            	    
-           }catch (FileNotFoundException e) {
-               e.printStackTrace();
-           }
-
-            
-
-
+		}
 //		
 //
 //		
 //		findPath = new FindPath(map);
 //		map.generateNodes();
 //		
-//		
-//		for(int i=0;i<queries.size();i++){
-//			
-//			
-//			Query newQuery = queries.get(i);
-//			
-//			map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot);
-//			
-//			ArrayList<Node> result = findPath.compute();
-//			
-//			String pathCost = Double.toString(result.get(0).costFromStart);
-//			String answer ="";
-//			for(int i1=0;i1<result.size();i1++){
-//				
-//
-//
-//				String street = result.get(i1).getParent().findEdge(result.get(i1)).streetName;
-//				if(i1!=0){
-//					answer = "-"+result.get(i1).junction+"-"+answer;
-//				}
-//				else{
-//					
-//				}
-//			
-//				answer = street+answer;
-//				
-//				
-//			}
-//			answer = pathCost+";"+answer;
-//			System.out.println(answer);
-//			
-//		}
+/**		try
+		{
+			for(int i=0;i<queries.size();i++){
 
+
+				Query newQuery = queries.get(i);
+
+				map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot);
+
+				ArrayList<Node> result = findPath.compute();
+
+				String pathCost = Double.toString(result.get(0).costFromStart);
+				String answer ="";
+				for(int i1=0;i1<result.size();i1++){
+
+
+
+					String street = result.get(i1).getParent().findEdge(result.get(i1)).streetName;
+					if(i1!=0){
+						answer = "-"+result.get(i1).junction+"-"+answer;
+					}
+					else{
+
+					}
+
+					answer = street+answer;
+
+
+				}
+				answer = pathCost+";"+answer;
+				System.out.println(answer);
+				bw.write(answer);
+				bw.newLine();
+			}
+			bw.flush();
+			bw.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		finally
+		{
+			try// if the file was opened, close it
+			{
+				if (fw != null)
+					fw.close();
+			}
+			catch (IOException ioe)
+			{
+				System.out.println(ioe.getMessage());
+			}
+		}
+*/
 //	      long end = System.currentTimeMillis();
 //	      System.out.println("Total Time: "+(end-startTime));
 	     
