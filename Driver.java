@@ -52,12 +52,12 @@ public class Driver {
 					{
 						Tokenizer st = new StringTokenizer(line,';');
 						roadName = st.nextToken();
-	                	j1 = st.nextToken();
-	                	j2 = st.nextToken();
-	                	roadLength = Integer.parseInt(st.nextToken());
-	                	nLots = Integer.parseInt(st.nextToken());
-	                	newRoad = new RoadEntry(roadName,j1,j2,roadLength,nLots);
-	                	map.addRoad(newRoad);
+						j1 = st.nextToken();
+						j2 = st.nextToken();
+						roadLength = Integer.parseInt(st.nextToken());
+						nLots = Integer.parseInt(st.nextToken());
+						newRoad = new RoadEntry(roadName,j1,j2,roadLength,nLots);
+						map.addRoad(newRoad);
 						line = br.readLine();
 					}
 				}
