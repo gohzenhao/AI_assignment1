@@ -110,8 +110,7 @@ public class Environment {
 		
 		if(this.findNode("initial")!=null && this.findNode("goal")!=null){
 			
-			this.deleteNode();
-			
+			this.deleteNode();	
 			
 		}
 		
@@ -119,6 +118,7 @@ public class Environment {
 		Node goalNode = new Node("goal");
 		RoadEntry startRoad = this.findRoad(startingRoad);
 		RoadEntry endRoad = this.findRoad(endingRoad);
+		
 		
 		String junc1 = startRoad.startJunc;
 		String junc2 = startRoad.endJunc;

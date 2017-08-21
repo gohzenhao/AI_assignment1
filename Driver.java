@@ -22,8 +22,8 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("src/assignment1/environmentFile.txt");
-		File queryFile = new File("src/assignment1/query-simple.txt");
+		File environmentFile = new File("src/assignment1/text2.txt");
+		File queryFile = new File("src/assignment1/query2.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
 		FileReader fr = null;
@@ -104,7 +104,7 @@ public class Driver {
 						for(int i=0;i<initial.length();i++) 
 						{
 							if(Character.isUpperCase(initial.charAt(i))) {
-
+								
 								startPlot =  Character.getNumericValue(initial.charAt(i-1));
 								initialRoad = initial.substring(i);
 							}
@@ -174,7 +174,7 @@ public class Driver {
 
 
 				Query newQuery = queries.get(i);
-
+				System.out.println(newQuery.sRoad+" "+newQuery.gRoad);
 				map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot);
 
 				ArrayList<Node> result = findPath.compute();
