@@ -22,7 +22,7 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("src/assignment1/text2.txt");
+		File environmentFile = new File("src/assignment1/test2.txt");
 		File queryFile = new File("src/assignment1/query2.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
@@ -47,6 +47,7 @@ public class Driver {
 			//read environment file
 			if(environmentFile.exists())
 			{
+
 				fr = new FileReader(environmentFile);
 				br = new BufferedReader(fr);
 				String line = br.readLine();
@@ -105,7 +106,9 @@ public class Driver {
 						{
 							if(Character.isUpperCase(initial.charAt(i))) {
 								
-								startPlot =  Character.getNumericValue(initial.charAt(i-1));
+								
+								startPlot =  Integer.parseInt(initial.substring(0,i));
+								System.out.println(startPlot);
 								initialRoad = initial.substring(i);
 							}
 						}
@@ -113,7 +116,7 @@ public class Driver {
 						for(int i=0;i<goal.length();i++)
 						{
 							if(Character.isUpperCase(goal.charAt(i))){
-								goalPlot = Character.getNumericValue(goal.charAt(i-1));
+								goalPlot = Integer.parseInt(goal.substring(0, i));
 								goalRoad = goal.substring(i);
 							}
 						}
@@ -164,6 +167,10 @@ public class Driver {
 		
 		findPath = new FindPath(map);
 		map.generateNodes();
+		
+//		map.addGoals("Road-29","Road-23",2,1);
+//		ArrayList<Node> result = findPath.compute();
+		
 
 		try
 		{
@@ -174,7 +181,7 @@ public class Driver {
 
 
 				Query newQuery = queries.get(i);
-				System.out.println(newQuery.sRoad+" "+newQuery.gRoad);
+				
 				map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot);
 
 				ArrayList<Node> result = findPath.compute();
@@ -209,6 +216,7 @@ public class Driver {
 		{
 			System.out.println(e.getMessage());
 		}
+			
 //		finally
 //		{
 //			try// if the file was opened, close it

@@ -144,8 +144,8 @@ public class Environment {
 		startingNode.addChildren(newEdge2);
 		goalNode.addChildren(newEdge3);
 		goalNode.addChildren(newEdge4);
-		startingNode.setPlotNum(2);
-		goalNode.setPlotNum(3);
+//		startingNode.setPlotNum(start);
+//		goalNode.setPlotNum(end);
 		
 //		Edge edge = new Edge(startingNode,cost,startingRoad);
 //		Edge edge2 = new Edge(startingNode,cost2,startingRoad);
