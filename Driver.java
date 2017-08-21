@@ -11,20 +11,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 
 public class Driver {
 	
 	public static void main(String[] args) throws IOException{
 		
-		File environmentFile = new File(args[0]+".txt");
-		File queryFile = new File(args[1]+".txt");
-		File outputFile = new File(args[2]+".txt");
+//		File environmentFile = new File(args[0]+".txt");
+//		File queryFile = new File(args[1]+".txt");
+//		File outputFile = new File(args[2]+".txt");
+		
+		File environmentFile = new File("src/assignment1/environmentFile.txt");
+		File queryFile = new File("src/assignment1/query-simple.txt");
+		File outputFile = new File("src/assignment1/answer.txt");
 		
 		FileReader fr = null;
 		BufferedReader br = null;
-		FileWriter fw=new FileWriter(outputFile);
-		BufferedWriter bw=new BufferedWriter(fw);
+		
 		String roadName,j1,j2;
 		int roadLength,nLots;
 		RoadEntry newRoad;
@@ -50,7 +54,8 @@ public class Driver {
 				{
 					while(line!=null)
 					{
-						Tokenizer st = new StringTokenizer(line,';');
+						System.out.println(line);
+						StringTokenizer st = new StringTokenizer(line," ; ");
 						roadName = st.nextToken();
 						j1 = st.nextToken();
 						j2 = st.nextToken();
@@ -59,7 +64,9 @@ public class Driver {
 						newRoad = new RoadEntry(roadName,j1,j2,roadLength,nLots);
 						map.addRoad(newRoad);
 						line = br.readLine();
+						
 					}
+
 				}
 				catch (IOException e)
 				{
@@ -69,8 +76,8 @@ public class Driver {
 				{
 					try// if the file was opened, close it
 					{
-					if (fw != null)
-					fw.close();
+					if (fr != null)
+					fr.close();
 					}
 					catch (IOException ioe)
 					{
@@ -90,8 +97,8 @@ public class Driver {
 				{
 					while(line!=null)
 					{
-						StringTokenizer st = new StringTokenizer(line,';');
-						String initial = st.nextToken()];
+						StringTokenizer st = new StringTokenizer(line," ; ");
+						String initial = st.nextToken();
 						String goal = st.nextToken();
 						//get initial node
 						for(int i=0;i<initial.length();i++) 
@@ -123,8 +130,8 @@ public class Driver {
 				{
 					try// if the file was opened, close it
 					{
-					if (fw != null)
-					fw.close();
+					if (fr != null)
+					fr.close();
 					}
 					catch (IOException ioe)
 					{
@@ -152,14 +159,17 @@ public class Driver {
 			}
 
 		}
-//		
-//
-//		
-//		findPath = new FindPath(map);
-//		map.generateNodes();
-//		
-/**		try
+		
+
+		
+		findPath = new FindPath(map);
+		map.generateNodes();
+
+		try
 		{
+			FileWriter fw=new FileWriter(outputFile);
+			BufferedWriter bw=new BufferedWriter(fw);
+			
 			for(int i=0;i<queries.size();i++){
 
 
@@ -199,19 +209,19 @@ public class Driver {
 		{
 			System.out.println(e.getMessage());
 		}
-		finally
-		{
-			try// if the file was opened, close it
-			{
-				if (fw != null)
-					fw.close();
-			}
-			catch (IOException ioe)
-			{
-				System.out.println(ioe.getMessage());
-			}
-		}
-*/
+//		finally
+//		{
+//			try// if the file was opened, close it
+//			{
+//				if (fw != null)
+//					fw.close();
+//			}
+//			catch (IOException ioe)
+//			{
+//				System.out.println(ioe.getMessage());
+//			}
+//		}
+
 //	      long end = System.currentTimeMillis();
 //	      System.out.println("Total Time: "+(end-startTime));
 	     

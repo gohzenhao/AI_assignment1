@@ -76,12 +76,11 @@ public class FindPath {
 	public ArrayList<Node> compute(){
 		
 		PriorityQueue<Node> openList = new PriorityQueue<Node>(map.getNodes().size(),comparator);
-	    LinkedList explored = new LinkedList();
-	    double totalCost = 0;
+	    LinkedList<Node> explored = new LinkedList<>();
+
 	    Node startNode = this.getStart();
 	    Node goalNode = this.getEnd();
 	    startNode.setCostFromStart(0);
-	    String streetName;
 	    openList.add(startNode);
 
 	    while(!openList.isEmpty()){
