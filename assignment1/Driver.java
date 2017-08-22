@@ -22,9 +22,9 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("src/assignment1/test2.txt");
-		File queryFile = new File("src/assignment1/query2.txt");
-		File outputFile = new File("src/assignment1/answer.txt");
+		File environmentFile = new File("assignment1/environmentFile.txt");
+		File queryFile = new File("assignment1/query-simple.txt");
+		File outputFile = new File("assignment1/answer.txt");
 		
 //	      long startTime = System.currentTimeMillis();
 		FileReader fr = null;
@@ -164,8 +164,6 @@ public class Driver {
 
 		}
 		
-
-		
 		findPath = new FindPath(map);
 		map.generateNodes();
 		
@@ -191,7 +189,7 @@ public class Driver {
 //		}
 //		answer = pathCost+";"+answer;
 //		System.out.println(answer);
-		
+//		
 		
 
 		try
@@ -205,37 +203,36 @@ public class Driver {
 				String answer ="";
 				
 				Query newQuery = queries.get(i);
-				
-				if(map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot)){
-
-					
-
-				ArrayList<Node> result = findPath.compute();
-
-				String pathCost = Double.toString(result.get(0).costFromStart);
-				
-				for(int i1=0;i1<result.size();i1++){
-
-
-					String street = result.get(i1).getParent().findEdge(result.get(i1)).streetName;
-					if(i1!=0){
-						answer = "-"+result.get(i1).junction+"-"+answer;
+				if(map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot))
+				{
+					ArrayList<Node> result = findPath.compute();
+					if(result!=null)
+					{
+						String pathCost = Double.toString(result.get(0).costFromStart);
+						
+						for(int i1=0;i1<result.size();i1++){
+		
+		
+							String street = result.get(i1).getParent().findEdge(result.get(i1)).streetName;
+							if(i1!=0){
+								answer = "-"+result.get(i1).junction+"-"+answer;
+							}
+							else{
+		
+							}
+		
+							answer = street+answer;
+		
+		
+						}
+						answer = pathCost+";"+answer;
 					}
-					else{
-
-					}
-
-					answer = street+answer;
-
-
+					else
+						answer = "no-path";
 				}
-				answer = pathCost+";"+answer;
-				System.out.println(answer);
-				}
-				else{
+				else
 					answer = "no-path";
-					System.out.println(answer);
-				}
+				System.out.println(answer);
 				bw.write(answer);
 				bw.newLine();
 			}

@@ -51,28 +51,37 @@ public class RoadEntry {
 	}
 	
 	public double getCostBetweenEachLot(){
-		return (double) (roadLength/(nLots/2.0));
+		return roadLength/(nLots/2.0);
+	}
+	
+	public double distanceBetweenTwoNodes(int lotNum1, int lotNum2)
+	{
+		if(lotNum1%2==0)
+			lotNum1=lotNum1-1;
+		if(lotNum2%2==0)
+			lotNum2=lotNum2-1;
+		if(lotNum1==lotNum2)
+			return 0;
+		else
+			return (Math.abs(lotNum1-lotNum2)/2*getCostBetweenEachLot());
 	}
 	
 	public double distanceToStartJunc(double lotNum){
-		if((lotNum%2)==0){
-			lotNum = lotNum-1;
-			return (double) (lotNum/2)*getCostBetweenEachLot();
-			
-			
+		if(lotNum<=nLots)
+		{
+			if((lotNum%2)==0)
+				lotNum = lotNum-1;
+			return (lotNum/2)*getCostBetweenEachLot();
 		}
-		else{
-			return (double) ((lotNum/2)*getCostBetweenEachLot());
-		}
+		else
+			return -1;
 	}
 	
 	public double distanceToEndJunc(double lotNum){
-		
-		return (roadLength-(distanceToStartJunc(lotNum)));
-		
+		if(lotNum<=nLots)
+			return (roadLength-(distanceToStartJunc(lotNum)));
+		return -1;
 	}
-	
-	
 	
 }
 	

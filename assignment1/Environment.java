@@ -121,51 +121,50 @@ public class Environment {
 		Node goalNode = new Node("goal");
 		RoadEntry startRoad = this.findRoad(startingRoad);
 		RoadEntry endRoad = this.findRoad(endingRoad);
+		if(startRoad!=null && endRoad!= null && start<=startRoad.nLots && end<=endRoad.nLots && start>0 && end>0)
+		{
+			if(startRoad.equals(endRoad))
+			{
+				double cost = startRoad.distanceBetweenTwoNodes(start, end);
+				Edge edge = new Edge(goalNode,cost,startingRoad);
+				startingNode.addChildren(edge);
+			}
+			else
+			{
+				String junc1 = startRoad.startJunc;
+				String junc2 = startRoad.endJunc;
+				String junc3 = endRoad.startJunc;
+				String junc4 = endRoad.endJunc;
+				
+				Node node1 = this.findNode(junc1);
+				Node node2 = this.findNode(junc2);
+				Node node3 = this.findNode(junc3);
+				Node node4 = this.findNode(junc4);
+				
+				double cost1 = startRoad.distanceToStartJunc(start);
+				double cost2 = startRoad.distanceToEndJunc(start);
+				double cost3 = endRoad.distanceToStartJunc(end);
+				double cost4 = endRoad.distanceToEndJunc(end);
 		
-		if(start>startRoad.nLots || end>endRoad.nLots){
-			
-			return false;
-			
+				
+				Edge newEdge = new Edge(node1,cost1,startingRoad);
+				Edge newEdge2 = new Edge(node2,cost2,startingRoad);
+		
+				
+				startingNode.addChildren(newEdge);
+				startingNode.addChildren(newEdge2);
+		
+				Edge edge3 = new Edge(goalNode,cost3,endingRoad);
+				Edge edge4 = new Edge(goalNode,cost4,endingRoad);
+		
+				node3.addChildren(edge3);
+				node4.addChildren(edge4);
+			}			
+			this.nodes.add(startingNode);
+			this.nodes.add(goalNode);
+			return true;
 		}
-		else{
-		
-		
-		String junc1 = startRoad.startJunc;
-		String junc2 = startRoad.endJunc;
-		String junc3 = endRoad.startJunc;
-		String junc4 = endRoad.endJunc;
-		
-		Node node1 = this.findNode(junc1);
-		Node node2 = this.findNode(junc2);
-		Node node3 = this.findNode(junc3);
-		Node node4 = this.findNode(junc4);
-		
-		double cost = startRoad.distanceToStartJunc(start);
-		double cost2 = startRoad.distanceToEndJunc(start);
-		double cost3 = endRoad.distanceToStartJunc(end);
-		double cost4 = endRoad.distanceToEndJunc(end);
-
-		
-		Edge newEdge = new Edge(node1,cost,startingRoad);
-		Edge newEdge2 = new Edge(node2,cost2,startingRoad);
-
-		
-		startingNode.addChildren(newEdge);
-		startingNode.addChildren(newEdge2);
-
-		Edge edge3 = new Edge(goalNode,cost3,endingRoad);
-		Edge edge4 = new Edge(goalNode,cost4,endingRoad);
-
-		node3.addChildren(edge3);
-		node4.addChildren(edge4);
-	
-		
-		this.nodes.add(startingNode);
-		this.nodes.add(goalNode);
-		return true;
-		}
-		
-		
+		return false; 
 	}
 	
 	
