@@ -40,14 +40,31 @@ public class FindPath {
 //	    return path;
 //	  }
 	
+//	Comparator<Node> comparator = new Comparator<Node>() {
+//	    @Override
+//	    public int compare(Node i, Node j){
+//            if(i.costFromStart > j.costFromStart){
+//                return 1;
+//            }
+//
+//            else if (i.costFromStart < j.costFromStart){
+//                return -1;
+//            }
+//
+//            else{
+//                return 0;
+//            }
+//        }
+//	};
+	
 	Comparator<Node> comparator = new Comparator<Node>() {
 	    @Override
 	    public int compare(Node i, Node j){
-            if(i.costFromStart > j.costFromStart){
+            if(i.getTotalCost() > j.getTotalCost()){
                 return 1;
             }
 
-            else if (i.costFromStart < j.costFromStart){
+            else if (i.getTotalCost() < j.getTotalCost()){
                 return -1;
             }
 
@@ -84,7 +101,11 @@ public class FindPath {
 	    if(startNode!=null && goalNode!=null)
 	    {
 		    startNode.setCostFromStart(0);
+		    
+		    startNode.getEstimatedCostToGoal(goalNode);
+		    
 		    openList.add(startNode);
+		    
 		    boolean goalNodeFound = false;
 		    while(!openList.isEmpty()){
 		    	Iterator<Node> ite = openList.iterator();
@@ -110,6 +131,8 @@ public class FindPath {
 	
 		    		Edge edge = current.getAdjencies().get(i);
 		    		Node child = edge.getTarget();
+		    		
+		    		child.getEstimatedCostToGoal(goalNode);
 	
 		    		
 		    		boolean isOpen = openList.contains(child);
@@ -121,16 +144,9 @@ public class FindPath {
 		    		if((!isOpen && !isClosed) || costFromStart < child.costFromStart){
 		    			child.setParent(current);
 	
-	//	    			totalCost += edge.getCost();
 	
 		    			child.costFromStart = costFromStart;
-//		    			if(isClosed){
-//		    				explored.remove(child);
-//		    			}
-//		    			if(!isOpen){
-//		    				openList.add(child);
-//		    				
-//		    			}
+
 		    			openList.add(child);
 	
 		    		}

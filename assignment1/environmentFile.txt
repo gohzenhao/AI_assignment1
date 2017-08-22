@@ -1,3 +1,0 @@
-Carmody1 ; J1 ; J2 ; 4 ; 4
-Schonell1 ; J4 ; J5 ; 4 ; 4
-Schonell2 ; J5 ; J6 ; 4 ; 4

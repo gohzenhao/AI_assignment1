@@ -11,6 +11,7 @@ public class Node{
 	double costFromStart;
 	int plotNum;
 	ArrayList<Edge> adjencies;
+	double estimatedCostToGoal;
 	
 	public Node(String inJunction){
 		
@@ -18,6 +19,7 @@ public class Node{
 		this.parent = null;
 		this.adjencies = new ArrayList<>();
 		this.costFromStart = 0;
+		this.estimatedCostToGoal =0;
 		
 	}
 	
@@ -93,15 +95,13 @@ public class Node{
 		}
 	}
 	
-	public double getHeuristic(){
+	public double getEstimatedCostToGoal(Node goal){
 		
-		double cost = 0;
-		for(int i=0;i<this.adjencies.size();i++){
-			
-			cost += this.adjencies.get(i).cost;
-
-		}
-		return (cost/this.adjencies.size());
+		return 0;
+	}
+	
+	public double getTotalCost(){
+		return (this.costFromStart+this.estimatedCostToGoal);
 	}
 
 

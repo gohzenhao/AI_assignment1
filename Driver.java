@@ -22,9 +22,9 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("assignment1/environmentFile.txt");
-		File queryFile = new File("assignment1/query-simple.txt");
-		File outputFile = new File("assignment1/answer.txt");
+		File environmentFile = new File("src/assignment1/test2.txt");
+		File queryFile = new File("src/assignment1/query2.txt");
+		File outputFile = new File("src/assignment1/answer.txt");
 		
 //	      long startTime = System.currentTimeMillis();
 		FileReader fr = null;
