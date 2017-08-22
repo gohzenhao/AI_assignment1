@@ -45,7 +45,6 @@ public class Driver {
 		
 
 		try {
-			//read environment file
 			if(environmentFile.exists())
 			{
 
