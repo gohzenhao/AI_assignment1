@@ -28,5 +28,6 @@ public class Edge {
 		public void setTarget(Node target) {
 			this.target = target;
 		}
+		
 
 }

@@ -81,6 +81,28 @@ public class Node{
 		}
 		return null;
 	}
+	
+	public void deleteEdge(){
+		for(int i=0;i<this.adjencies.size();i++){
+			if(this.adjencies.get(i).target.junction=="initial"){
+				this.adjencies.remove(i);
+			}
+			if(this.adjencies.get(i).target.junction=="goal"){
+				this.adjencies.remove(i);
+			}
+		}
+	}
+	
+	public double getHeuristic(){
+		
+		double cost = 0;
+		for(int i=0;i<this.adjencies.size();i++){
+			
+			cost += this.adjencies.get(i).cost;
+
+		}
+		return (cost/this.adjencies.size());
+	}
 
 
 	

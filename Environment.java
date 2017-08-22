@@ -106,18 +106,28 @@ public class Environment {
 		
 	}
 	
-	public void addGoals(String startingRoad,String endingRoad,int start,int end){
+	public boolean addGoals(String startingRoad,String endingRoad,int start,int end){
 		
 		if(this.findNode("initial")!=null && this.findNode("goal")!=null){
 			
-			this.deleteNode();	
+			this.deleteNode();
+			for(int i=0;i<this.nodes.size();i++){
+				this.nodes.get(i).deleteEdge();
+			}
 			
 		}
-		
+
 		Node startingNode = new Node("initial");
 		Node goalNode = new Node("goal");
 		RoadEntry startRoad = this.findRoad(startingRoad);
 		RoadEntry endRoad = this.findRoad(endingRoad);
+		
+		if(start>startRoad.nLots || end>endRoad.nLots){
+			
+			return false;
+			
+		}
+		else{
 		
 		
 		String junc1 = startRoad.startJunc;
@@ -134,30 +144,26 @@ public class Environment {
 		double cost2 = startRoad.distanceToEndJunc(start);
 		double cost3 = endRoad.distanceToStartJunc(end);
 		double cost4 = endRoad.distanceToEndJunc(end);
+
 		
 		Edge newEdge = new Edge(node1,cost,startingRoad);
 		Edge newEdge2 = new Edge(node2,cost2,startingRoad);
-		Edge newEdge3 = new Edge(node3,cost3,endingRoad);
-		Edge newEdge4 = new Edge(node4,cost4,endingRoad);
+
 		
 		startingNode.addChildren(newEdge);
 		startingNode.addChildren(newEdge2);
-		goalNode.addChildren(newEdge3);
-		goalNode.addChildren(newEdge4);
-//		startingNode.setPlotNum(start);
-//		goalNode.setPlotNum(end);
-		
-//		Edge edge = new Edge(startingNode,cost,startingRoad);
-//		Edge edge2 = new Edge(startingNode,cost2,startingRoad);
-//		node1.addChildren(edge);
-//		node2.addChildren(edge2);
+
 		Edge edge3 = new Edge(goalNode,cost3,endingRoad);
 		Edge edge4 = new Edge(goalNode,cost4,endingRoad);
+
 		node3.addChildren(edge3);
 		node4.addChildren(edge4);
+	
 		
 		this.nodes.add(startingNode);
 		this.nodes.add(goalNode);
+		return true;
+		}
 		
 		
 	}
@@ -240,6 +246,7 @@ public class Environment {
 		}
 		
 	}
+	
 	
 
 	

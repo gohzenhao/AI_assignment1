@@ -26,6 +26,7 @@ public class Driver {
 		File queryFile = new File("src/assignment1/query2.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
+//	      long startTime = System.currentTimeMillis();
 		FileReader fr = null;
 		BufferedReader br = null;
 		
@@ -42,7 +43,7 @@ public class Driver {
 		
 		ArrayList<Query> queries = new ArrayList<>();
 		
-//	      long startTime = System.currentTimeMillis();
+
 		try {
 			//read environment file
 			if(environmentFile.exists())
@@ -55,7 +56,6 @@ public class Driver {
 				{
 					while(line!=null)
 					{
-						System.out.println(line);
 						StringTokenizer st = new StringTokenizer(line," ; ");
 						roadName = st.nextToken();
 						j1 = st.nextToken();
@@ -108,7 +108,7 @@ public class Driver {
 								
 								
 								startPlot =  Integer.parseInt(initial.substring(0,i));
-								System.out.println(startPlot);
+//								System.out.println(startPlot);
 								initialRoad = initial.substring(i);
 							}
 						}
@@ -117,6 +117,7 @@ public class Driver {
 						{
 							if(Character.isUpperCase(goal.charAt(i))){
 								goalPlot = Integer.parseInt(goal.substring(0, i));
+//								System.out.println(goalPlot);
 								goalRoad = goal.substring(i);
 							}
 						}
@@ -168,8 +169,29 @@ public class Driver {
 		findPath = new FindPath(map);
 		map.generateNodes();
 		
-//		map.addGoals("Road-29","Road-23",2,1);
+//		map.addGoals("Road-28","Road-6",1,20);
 //		ArrayList<Node> result = findPath.compute();
+//		
+//		String answer ="";
+//		String pathCost = Double.toString(result.get(0).costFromStart);
+//		for(int i1=0;i1<result.size();i1++){
+//
+////			System.out.println(result.get(i1).costFromStart);
+//
+//			String street = result.get(i1).getParent().findEdge(result.get(i1)).streetName;
+//			if(i1!=0){
+//				answer = "-"+result.get(i1).junction+"-"+answer;
+//			}
+//			else{
+//
+//			}
+//
+//			answer = street+answer;
+//
+//		}
+//		answer = pathCost+";"+answer;
+//		System.out.println(answer);
+		
 		
 
 		try
@@ -178,18 +200,21 @@ public class Driver {
 			BufferedWriter bw=new BufferedWriter(fw);
 			
 			for(int i=0;i<queries.size();i++){
-
-
+				
+				System.out.println(map.nodes.size());
+				String answer ="";
+				
 				Query newQuery = queries.get(i);
 				
-				map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot);
+				if(map.addGoals(newQuery.sRoad,newQuery.gRoad,newQuery.sPlot,newQuery.gPlot)){
+
+					
 
 				ArrayList<Node> result = findPath.compute();
 
 				String pathCost = Double.toString(result.get(0).costFromStart);
-				String answer ="";
+				
 				for(int i1=0;i1<result.size();i1++){
-
 
 
 					String street = result.get(i1).getParent().findEdge(result.get(i1)).streetName;
@@ -206,28 +231,38 @@ public class Driver {
 				}
 				answer = pathCost+";"+answer;
 				System.out.println(answer);
+				}
+				else{
+					answer = "no-path";
+					System.out.println(answer);
+				}
 				bw.write(answer);
 				bw.newLine();
 			}
 			bw.flush();
 			bw.close();
+			
+			
 		}
 		catch (IOException e)
 		{
 			System.out.println(e.getMessage());
 		}
-			
-//		finally
-//		{
-//			try// if the file was opened, close it
-//			{
-//				if (fw != null)
-//					fw.close();
-//			}
-//			catch (IOException ioe)
-//			{
-//				System.out.println(ioe.getMessage());
-//			}
+		
+
+		
+//			
+////		finally
+////		{
+////			try// if the file was opened, close it
+////			{
+////				if (fw != null)
+////					fw.close();
+////			}
+////			catch (IOException ioe)
+////			{
+////				System.out.println(ioe.getMessage());
+////			}
 //		}
 
 //	      long end = System.currentTimeMillis();

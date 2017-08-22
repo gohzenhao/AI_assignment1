@@ -51,18 +51,18 @@ public class RoadEntry {
 	}
 	
 	public double getCostBetweenEachLot(){
-		return (roadLength/(nLots/2));
+		return (double) (roadLength/(nLots/2.0));
 	}
 	
 	public double distanceToStartJunc(double lotNum){
 		if((lotNum%2)==0){
 			lotNum = lotNum-1;
-			return (lotNum/2)*getCostBetweenEachLot();
+			return (double) (lotNum/2)*getCostBetweenEachLot();
 			
 			
 		}
 		else{
-			return ((lotNum/2)*getCostBetweenEachLot());
+			return (double) ((lotNum/2)*getCostBetweenEachLot());
 		}
 	}
 	

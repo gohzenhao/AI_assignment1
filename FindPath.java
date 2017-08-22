@@ -3,6 +3,7 @@ package assignment1;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -84,11 +85,20 @@ public class FindPath {
 	    openList.add(startNode);
 
 	    while(!openList.isEmpty()){
+	    	Iterator<Node> ite = openList.iterator();
+	    	System.out.println("nodes in open list : ");
+	    	while(ite.hasNext()){
+	    		Node next = ite.next();
+	    		System.out.println(next.junction+" , cost from path : "+next.costFromStart);
+	    	}
 	    	
 	    	Node current = openList.poll();
+	    	
+	    	System.out.println("Node selected : "+current.junction);
+
 	    	if(current.equals(goalNode)){
-	    		System.out.println("Goal found!");
-	    		System.out.println("Total cost : "+current.costFromStart);
+//	    		System.out.println("Goal found!");
+//	    		System.out.println("Total cost : "+current.costFromStart);
 	    		return constructPath(goalNode);
 	    	}
 	    	
@@ -105,7 +115,7 @@ public class FindPath {
 	    		double costFromStart = current.getCostFromStart() + cost;
 	    		
 	    		
-	    		if((!isOpen && !isClosed) || costFromStart < child.getCostFromStart()){
+	    		if((!isOpen && !isClosed) || costFromStart < child.costFromStart){
 	    			child.setParent(current);
 
 //	    			totalCost += edge.getCost();
@@ -116,6 +126,7 @@ public class FindPath {
 	    			}
 	    			if(!isOpen){
 	    				openList.add(child);
+	    				
 	    			}
 
 	    		}
