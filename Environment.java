@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ public class Environment {
 	public ArrayList<Node> nodes;
 	String initialRoad;
 	String goalRoad;
+	public HashMap<String,Node> hm = new HashMap<String,Node>();
 	
 	public void setInitial(String inRoad){
 		this.initialRoad =inRoad;
@@ -76,6 +78,7 @@ public class Environment {
 	public Node findNode(String juncName){
 		Node result = null;
 		for(int i=0;i<this.nodes.size();i++){
+			System.out.println("Finding...");
 			if(this.nodes.get(i).junction.equals(juncName)){
 				result = this.nodes.get(i);
 				return result;
@@ -86,16 +89,22 @@ public class Environment {
 	
 	public void addJunctions(String roadName,String j1,String j2,int roadLength){
 		Node startJunc,endJunc;
-		Node checkSJ = this.findNode(j1);
-		if(checkSJ==null)
+		Node checkSJ = this.hm.get(j1);
+		if(checkSJ==null){
 			startJunc = this.addNode(new Node(j1));
-		else
-			startJunc = this.findNode(j1);
-		Node checkEJ = this.findNode(j2);
-		if(checkEJ==null)
+			this.hm.put(j1, startJunc);
+		}
+		else{
+			startJunc = this.hm.get(j1);
+		}
+		Node checkEJ = this.hm.get(j2);
+		if(checkEJ==null){
 			endJunc = this.addNode(new Node(j2));
-		else
-			endJunc = this.findNode(j2);
+			this.hm.put(j2,endJunc);
+	}
+		else{
+			endJunc = this.hm.get(j2);
+		}
 		Edge edge1 = new Edge(endJunc,roadLength,roadName);
 		Edge edge2 = new Edge(startJunc,roadLength, roadName);
 		startJunc.addChildren(edge1);
@@ -247,7 +256,7 @@ public class Environment {
 //	}
 	public static void main(String[] args)
 	{
-		File environmentFile = new File("src/assignment1/no_repeats_1000.txt");
+		File environmentFile = new File("src/assignment1/no_repeats_1000000.txt");
 		FileReader fr = null;
 		BufferedReader br = null;
 		
@@ -264,7 +273,7 @@ public class Environment {
 		
 		ArrayList<Query> queries = new ArrayList<>();
 		
-
+		long start = System.nanoTime();
 		try {
 			if(environmentFile.exists())
 			{
@@ -272,6 +281,7 @@ public class Environment {
 				fr = new FileReader(environmentFile);
 				br = new BufferedReader(fr);
 				String line = br.readLine();
+			
 				try
 				{
 					while(line!=null)
@@ -312,20 +322,25 @@ public class Environment {
 			}
 
 		}
-		for(RoadEntry r:map.getRoads())
-		{
-			System.out.println(r.getRoadName());
-		}
-		for(Node n:map.getNodes())
-		{
-			System.out.print(n.getJunction());
-			System.out.print("Children: ");
-			for(Edge e:n.getAdjencies())
-			{
-				System.out.print(e.getTarget().getJunction()+" , ");
-			}
-			System.out.println("");
-		}
+		long end = System.nanoTime();
+		long result = (end-start)/1000000000;
+		System.out.println(result+" seconds ");
+//		for(RoadEntry r:map.getRoads())
+//		{
+//			System.out.println(r.getRoadName());
+//		}
+		
+//		for(Node n:map.getNodes())
+//		{
+//			System.out.print(n.getJunction());
+//			System.out.print("Children: ");
+//			for(Edge e:n.getAdjencies())
+//			{
+//				System.out.print(e.getTarget().getJunction()+" , ");
+//			}
+//			System.out.println("");
+//		}
+
 	}
 
 }

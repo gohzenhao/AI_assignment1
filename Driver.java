@@ -22,7 +22,7 @@ public class Driver {
 		File queryFile = new File("src/assignment1/no_repeats_1000_query.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
-//	      long startTime = System.currentTimeMillis();
+	      long startTime = System.nanoTime();
 		FileReader fr = null;
 		BufferedReader br = null;
 		
@@ -256,8 +256,8 @@ public class Driver {
 ////			}
 //		}
 
-//	      long end = System.currentTimeMillis();
-//	      System.out.println("Total Time: "+(end-startTime));
+	      long end = System.nanoTime();
+	      System.out.println("Total Time: "+(end-startTime)/1000000);
 	     
 		
 		
