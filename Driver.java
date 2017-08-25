@@ -18,8 +18,8 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("src/assignment1/no_repeats_1000.txt");
-		File queryFile = new File("src/assignment1/no_repeats_1000_query.txt");
+		File environmentFile = new File("src/assignment1/no_repeats_100000.txt");
+		File queryFile = new File("src/assignment1/no_repeats_100000_query.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
 	    long startTime = System.nanoTime();
@@ -99,21 +99,26 @@ public class Driver {
 						//get initial node
 						for(int i=0;i<initial.length();i++) 
 						{
-							if(!Character.isDigit(initial.charAt(i))) {
+							if(Character.isAlphabetic(initial.charAt(i))) {
+								
 								
 								startPlot =  Integer.parseInt(initial.substring(0,i));
 								
 //								System.out.println(startPlot);
 								initialRoad = initial.substring(i);
+								break;
+								
 							}
 						}
 						//get goal node
 						for(int i=0;i<goal.length();i++)
 						{
-							if(!Character.isDigit(goal.charAt(i))){
+							if(Character.isAlphabetic(goal.charAt(i))){
 								goalPlot = Integer.parseInt(goal.substring(0, i));
 //								System.out.println(goalPlot);
 								goalRoad = goal.substring(i);
+								break;
+								
 							}
 						}
 						Query newQuery = new Query(initialRoad,goalRoad,startPlot,goalPlot);
@@ -258,23 +263,7 @@ public class Driver {
 //		}
 
 	      long end = System.nanoTime();
-	      System.out.println("Total Time: "+(end-startTime)/1000000);
-	     
-		
-		
-		
-
-
-//		for(int i=0;i<map.getNodes().size();i++){
-//			System.out.println("Main node : "+map.getNodes().get(i).junction);
-//			System.out.println("Children:"); 
-//			for(int u=0;u<map.getNodes().get(i).getAdjencies().size();u++){
-//				System.out.println(map.getNodes().get(i).getAdjencies().get(u).target.junction);
-//				System.out.println("Cost to get there : "+map.getNodes().get(i).getAdjencies().get(u).getCost());
-//				
-//
-//			}
-//		}
+	      System.out.println("Total Time: "+(end-startTime)/1000000000);
 		
 
     }

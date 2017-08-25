@@ -103,27 +103,15 @@ public class FindPath {
 	    {
 		    startNode.setCostFromStart(0);
 		    
-		    startNode.estimatedCostToGoal = startNode.getEstimatedCostToGoal(goalNode);
-		    
-		    
 		    openList.add(startNode);
 		    
 		    boolean goalNodeFound = false;
 		    while(!openList.isEmpty()){
-		    	Iterator<Node> ite = openList.iterator();
-		    	System.out.println("nodes in open list : ");
-		    	while(ite.hasNext()){
-		    		Node next = ite.next();
-		    		System.out.println(next.junction+" , cost from path : "+next.costFromStart);
-		    	}
 		    	
 		    	Node current = openList.poll();
 		    	
-		    	System.out.println("Node selected : "+current.junction);
 	
 		    	if(current.equals(goalNode)){
-	//	    		System.out.println("Goal found!");
-	//	    		System.out.println("Total cost : "+current.costFromStart);
 		    		goalNodeFound = true;
 		    		return constructPath(goalNode);
 		    	}
@@ -132,10 +120,7 @@ public class FindPath {
 		    	{
 	
 		    		Edge edge = current.getAdjencies().get(i);
-		    		Node child = edge.getTarget();
-		    		
-//		    		child.estimatedCostToGoal = child.getEstimatedCostToGoal(goalNode);
-	
+		    		Node child = edge.getTarget();	
 		    		
 		    		boolean isOpen = openList.contains(child);
 		    		boolean isClosed = explored.contains(child);

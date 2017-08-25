@@ -79,7 +79,6 @@ public class Environment {
 		if(checkSJ==null){
 			startJunc = this.addNode(new Node(j1));
 			addNode(startJunc);
-			System.out.println("adding : "+startJunc.junction);
 		}
 		else{
 			startJunc = findNode(j1);
@@ -88,7 +87,6 @@ public class Environment {
 		if(checkEJ==null){
 			endJunc = this.addNode(new Node(j2));
 			addNode(endJunc);
-			System.out.println("adding : "+endJunc.junction);
 	}
 		else{
 			endJunc = findNode(j2);
@@ -103,16 +101,18 @@ public class Environment {
 	public boolean addGoals(String startingRoad,String endingRoad,int start,int end){
 		
 		if(startingNode!=null && goalNode!=null){
-			System.out.println("EXISTING GOAL FOUND :");
 			startingNode=null;
 			for(int i=0;i<2;i++)
 			{
+				if(!goalNode.getAdjencies().isEmpty()){
 				ArrayList<Edge> adjencies=goalNode.getAdjencies().get(i).getTarget().getAdjencies();
+				
 				for(int j=0;j<adjencies.size();j++)
 				{
 					Edge edge = adjencies.get(j);
 					if(edge.getTarget().getJunction().equals("goal"))
 						adjencies.remove(j);
+				}
 				}
 			}
 			goalNode=null;
@@ -171,73 +171,6 @@ public class Environment {
 		}
 		return false; 
 	}
-//	
-//	public void addChildren(Node inNode,String inJunc){
-//		
-//
-//		for(int i=0;i<this.roads.size();i++){
-//			if(this.roads.get(i).startJunc.equals(inJunc)){
-//				Node adjency = this.findNode(this.roads.get(i).endJunc);
-//				
-//	
-//				String roadName = this.getRoadName(inNode, adjency);
-//				RoadEntry inRoad = this.findRoad(roadName);
-//				double cost = inRoad.getRoadLength();
-//				
-//
-//				Edge newEdge = new Edge(adjency,cost,roadName);
-//				this.findNode(inJunc).addChildren(newEdge);
-//				
-//			}
-//			else if(this.roads.get(i).endJunc.equals(inJunc)){
-//				Node adjency = this.findNode(this.roads.get(i).startJunc);
-////				adjency.setIsStart();
-//				String roadName = this.getRoadName(inNode, adjency);
-//				RoadEntry inRoad = this.findRoad(roadName);
-//				double cost = inRoad.getRoadLength();
-//				Edge newEdge = new Edge(adjency,cost,roadName);
-//				this.findNode(inJunc).addChildren(newEdge);
-//				
-//			}
-//		}
-//		
-//		
-//	}
-//	
-//	public String getRoadName(Node node, Node node2){
-//		
-//		String junc1 = node.junction;
-//		String junc2 = node2.junction;
-//		
-//		if(node.junction=="initial"){
-//			return initialRoad;
-//		}
-//		if(node2.junction=="goal"){
-//			return goalRoad;
-//		}
-//		for(int i=0;i<this.roads.size();i++){
-//			if(this.roads.get(i).startJunc.equals(junc1) && this.roads.get(i).endJunc.equals(junc2)){
-//				return this.roads.get(i).roadName;
-//			}
-//			if(this.roads.get(i).startJunc.equals(junc2) && this.roads.get(i).endJunc.equals(junc1)){
-//				return this.roads.get(i).roadName;
-//			}
-//		}
-//		return "";
-//	}
-//	
-//	public void deleteNode(){
-//		
-//		for(int i=0;i<this.nodes.size();i++){
-//			if(this.nodes.get(i).junction.equals("initial")){
-//				this.nodes.remove(i);
-//			}
-//			if(this.nodes.get(i).junction.equals("goal")){
-//				this.nodes.remove(i);
-//			}
-//		}
-//		
-//	}
 	
 	
 
