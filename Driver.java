@@ -18,11 +18,11 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("src/assignment1/no_repeats_1000.txt");
-		File queryFile = new File("src/assignment1/no_repeats_1000_query.txt");
+		File environmentFile = new File("src/assignment1/environmentFile.txt");
+		File queryFile = new File("src/assignment1/query-simple.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
-	      long startTime = System.nanoTime();
+	    long startTime = System.nanoTime();
 		FileReader fr = null;
 		BufferedReader br = null;
 		

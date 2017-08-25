@@ -25,11 +25,11 @@ public class FindPath {
 	
 	
 	public Node getStart(){
-		return this.map.findNode("initial");
+		return this.map.startingNode;
 	}
 	
 	public Node getEnd(){
-		return this.map.findNode("goal");
+		return this.map.goalNode;
 	}
 	
 //	protected List constructPath(Node node) {
