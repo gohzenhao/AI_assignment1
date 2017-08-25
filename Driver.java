@@ -18,8 +18,8 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("src/assignment1/environmentFile.txt");
-		File queryFile = new File("src/assignment1/query-simple.txt");
+		File environmentFile = new File("src/assignment1/no_repeats_1000.txt");
+		File queryFile = new File("src/assignment1/no_repeats_1000_query.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
 	    long startTime = System.nanoTime();
@@ -99,10 +99,10 @@ public class Driver {
 						//get initial node
 						for(int i=0;i<initial.length();i++) 
 						{
-							if(Character.isUpperCase(initial.charAt(i))) {
-								
+							if(!Character.isDigit(initial.charAt(i))) {
 								
 								startPlot =  Integer.parseInt(initial.substring(0,i));
+								
 //								System.out.println(startPlot);
 								initialRoad = initial.substring(i);
 							}
@@ -110,7 +110,7 @@ public class Driver {
 						//get goal node
 						for(int i=0;i<goal.length();i++)
 						{
-							if(Character.isUpperCase(goal.charAt(i))){
+							if(!Character.isDigit(goal.charAt(i))){
 								goalPlot = Integer.parseInt(goal.substring(0, i));
 //								System.out.println(goalPlot);
 								goalRoad = goal.substring(i);
@@ -118,6 +118,7 @@ public class Driver {
 						}
 						Query newQuery = new Query(initialRoad,goalRoad,startPlot,goalPlot);
 						queries.add(newQuery);
+			
 						line = br.readLine();
 					}
 				}
