@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+
 public class FindPath {
 	
 	Environment map;
@@ -102,7 +103,8 @@ public class FindPath {
 	    {
 		    startNode.setCostFromStart(0);
 		    
-		    startNode.getEstimatedCostToGoal(goalNode);
+		    startNode.estimatedCostToGoal = startNode.getEstimatedCostToGoal(goalNode);
+		    
 		    
 		    openList.add(startNode);
 		    
@@ -132,7 +134,7 @@ public class FindPath {
 		    		Edge edge = current.getAdjencies().get(i);
 		    		Node child = edge.getTarget();
 		    		
-		    		child.getEstimatedCostToGoal(goalNode);
+//		    		child.estimatedCostToGoal = child.getEstimatedCostToGoal(goalNode);
 	
 		    		
 		    		boolean isOpen = openList.contains(child);

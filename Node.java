@@ -78,8 +78,7 @@ public class Node{
 			
 			if(this.getAdjencies().get(i).target.equals(inNode)){
 				return this.getAdjencies().get(i);
-			}
-			
+			}			
 		}
 		return null;
 	}

@@ -6,11 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException; 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 
@@ -22,8 +18,8 @@ public class Driver {
 //		File queryFile = new File(args[1]+".txt");
 //		File outputFile = new File(args[2]+".txt");
 		
-		File environmentFile = new File("src/assignment1/test2.txt");
-		File queryFile = new File("src/assignment1/query2.txt");
+		File environmentFile = new File("src/assignment1/no_repeats_1000.txt");
+		File queryFile = new File("src/assignment1/no_repeats_1000_query.txt");
 		File outputFile = new File("src/assignment1/answer.txt");
 		
 //	      long startTime = System.currentTimeMillis();
@@ -63,8 +59,8 @@ public class Driver {
 						nLots = Integer.parseInt(st.nextToken());
 						newRoad = new RoadEntry(roadName,j1,j2,roadLength,nLots);
 						map.addRoad(newRoad);
-						line = br.readLine();
-						
+						map.addJunctions(roadName, j1, j2, roadLength);
+						line = br.readLine();						
 					}
 
 				}
@@ -164,7 +160,6 @@ public class Driver {
 		}
 		
 		findPath = new FindPath(map);
-		map.generateNodes();
 		
 //		map.addGoals("Road-28","Road-6",1,20);
 //		ArrayList<Node> result = findPath.compute();

@@ -1,10 +1,15 @@
 package assignment1;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 public class Environment {
 	
@@ -37,32 +42,24 @@ public class Environment {
 		this.nodes = nodes;
 	}
 
-	public Environment(){
-		
+	public Environment(){		
 		this.roads= new ArrayList<>();
 		this.nodes = new ArrayList<>();
-		
-		
 	}
 	
 	public void addRoad(RoadEntry inRoad){
 		this.roads.add(inRoad);
 	}
 	
+	public Node addNode(Node inNode)
+	{
+		this.nodes.add(inNode);
+		return inNode;
+	}
+	
 	public int getSize(){
 		return this.roads.size();
 	}
-	
-	public ArrayList<Node> getNodeArray(){
-		
-		return this.nodes;
-		
-	}
-	
-	public ArrayList<RoadEntry> getRoadArray(){
-		return this.roads;
-	}
-
 	
 	public RoadEntry findRoad(String streetName){
 
@@ -76,34 +73,33 @@ public class Environment {
 		return foundRoad;
 	}
 	
-
-	
-	public void generateNodes(){
-		String start ="";
-		String end ="";
-		Set<String> uniqueJunc = new HashSet<String>();
-		
-		
-		for(int i=0;i<this.roads.size();i++){
-			start = this.roads.get(i).startJunc;
-			end = this.roads.get(i).endJunc;
-			uniqueJunc.add(start);
-			uniqueJunc.add(end);
-		}
-		String[] junc = uniqueJunc.toArray(new String[0]);
-		for(int i=0;i<junc.length;i++){
-			
-			Node newNode = new Node(junc[i]);
-			this.nodes.add(newNode);
-		}
-		
+	public Node findNode(String juncName){
+		Node result = null;
 		for(int i=0;i<this.nodes.size();i++){
-			
-			this.addChildren(this.nodes.get(i),junc[i]);
+			if(this.nodes.get(i).junction.equals(juncName)){
+				result = this.nodes.get(i);
+				return result;
+			}
 		}
+		return result;
+	}
 	
-
-		
+	public void addJunctions(String roadName,String j1,String j2,int roadLength){
+		Node startJunc,endJunc;
+		Node checkSJ = this.findNode(j1);
+		if(checkSJ==null)
+			startJunc = this.addNode(new Node(j1));
+		else
+			startJunc = this.findNode(j1);
+		Node checkEJ = this.findNode(j2);
+		if(checkEJ==null)
+			endJunc = this.addNode(new Node(j2));
+		else
+			endJunc = this.findNode(j2);
+		Edge edge1 = new Edge(endJunc,roadLength,roadName);
+		Edge edge2 = new Edge(startJunc,roadLength, roadName);
+		startJunc.addChildren(edge1);
+		endJunc.addChildren(edge2);	
 	}
 	
 	public boolean addGoals(String startingRoad,String endingRoad,int start,int end){
@@ -166,72 +162,60 @@ public class Environment {
 		}
 		return false; 
 	}
-	
-	
-	public Node findNode(String juncName){
-		Node result = null;
-		for(int i=0;i<this.nodes.size();i++){
-			if(this.nodes.get(i).junction.equals(juncName)){
-				result = this.nodes.get(i);
-				return result;
-			}
-		}
-		return result;
-	}
-	
-	public void addChildren(Node inNode,String inJunc){
-		
-
-		for(int i=0;i<this.roads.size();i++){
-			if(this.roads.get(i).startJunc.equals(inJunc)){
-				Node adjency = this.findNode(this.roads.get(i).endJunc);
-				
-	
-				String roadName = this.getRoadName(inNode, adjency);
-				RoadEntry inRoad = this.findRoad(roadName);
-				double cost = inRoad.getRoadLength();
-				
-
-				Edge newEdge = new Edge(adjency,cost,roadName);
-				this.findNode(inJunc).addChildren(newEdge);
-				
-			}
-			else if(this.roads.get(i).endJunc.equals(inJunc)){
-				Node adjency = this.findNode(this.roads.get(i).startJunc);
-//				adjency.setIsStart();
-				String roadName = this.getRoadName(inNode, adjency);
-				RoadEntry inRoad = this.findRoad(roadName);
-				double cost = inRoad.getRoadLength();
-				Edge newEdge = new Edge(adjency,cost,roadName);
-				this.findNode(inJunc).addChildren(newEdge);
-				
-			}
-		}
-		
-		
-	}
-	
-	public String getRoadName(Node node, Node node2){
-		
-		String junc1 = node.junction;
-		String junc2 = node2.junction;
-		
-		if(node.junction=="initial"){
-			return initialRoad;
-		}
-		if(node2.junction=="goal"){
-			return goalRoad;
-		}
-		for(int i=0;i<this.roads.size();i++){
-			if(this.roads.get(i).startJunc.equals(junc1) && this.roads.get(i).endJunc.equals(junc2)){
-				return this.roads.get(i).roadName;
-			}
-			if(this.roads.get(i).startJunc.equals(junc2) && this.roads.get(i).endJunc.equals(junc1)){
-				return this.roads.get(i).roadName;
-			}
-		}
-		return "";
-	}
+//	
+//	public void addChildren(Node inNode,String inJunc){
+//		
+//
+//		for(int i=0;i<this.roads.size();i++){
+//			if(this.roads.get(i).startJunc.equals(inJunc)){
+//				Node adjency = this.findNode(this.roads.get(i).endJunc);
+//				
+//	
+//				String roadName = this.getRoadName(inNode, adjency);
+//				RoadEntry inRoad = this.findRoad(roadName);
+//				double cost = inRoad.getRoadLength();
+//				
+//
+//				Edge newEdge = new Edge(adjency,cost,roadName);
+//				this.findNode(inJunc).addChildren(newEdge);
+//				
+//			}
+//			else if(this.roads.get(i).endJunc.equals(inJunc)){
+//				Node adjency = this.findNode(this.roads.get(i).startJunc);
+////				adjency.setIsStart();
+//				String roadName = this.getRoadName(inNode, adjency);
+//				RoadEntry inRoad = this.findRoad(roadName);
+//				double cost = inRoad.getRoadLength();
+//				Edge newEdge = new Edge(adjency,cost,roadName);
+//				this.findNode(inJunc).addChildren(newEdge);
+//				
+//			}
+//		}
+//		
+//		
+//	}
+//	
+//	public String getRoadName(Node node, Node node2){
+//		
+//		String junc1 = node.junction;
+//		String junc2 = node2.junction;
+//		
+//		if(node.junction=="initial"){
+//			return initialRoad;
+//		}
+//		if(node2.junction=="goal"){
+//			return goalRoad;
+//		}
+//		for(int i=0;i<this.roads.size();i++){
+//			if(this.roads.get(i).startJunc.equals(junc1) && this.roads.get(i).endJunc.equals(junc2)){
+//				return this.roads.get(i).roadName;
+//			}
+//			if(this.roads.get(i).startJunc.equals(junc2) && this.roads.get(i).endJunc.equals(junc1)){
+//				return this.roads.get(i).roadName;
+//			}
+//		}
+//		return "";
+//	}
 	
 	public void deleteNode(){
 		
@@ -261,6 +245,87 @@ public class Environment {
 //			inNode.setStart(false);;
 //		}
 //	}
-	
+	public static void main(String[] args)
+	{
+		File environmentFile = new File("src/assignment1/no_repeats_1000.txt");
+		FileReader fr = null;
+		BufferedReader br = null;
+		
+		String roadName,j1,j2;
+		int roadLength,nLots;
+		RoadEntry newRoad;
+		Environment map = new Environment();
+		FindPath findPath;
+		
+		String initialRoad ="";
+		String goalRoad ="";
+		int startPlot=0;
+		int goalPlot=0;
+		
+		ArrayList<Query> queries = new ArrayList<>();
+		
+
+		try {
+			if(environmentFile.exists())
+			{
+
+				fr = new FileReader(environmentFile);
+				br = new BufferedReader(fr);
+				String line = br.readLine();
+				try
+				{
+					while(line!=null)
+					{
+						StringTokenizer st = new StringTokenizer(line," ; ");
+						roadName = st.nextToken();
+						j1 = st.nextToken();
+						j2 = st.nextToken();
+						roadLength = Integer.parseInt(st.nextToken());
+						nLots = Integer.parseInt(st.nextToken());
+						newRoad = new RoadEntry(roadName,j1,j2,roadLength,nLots);
+						map.addRoad(newRoad);
+						map.addJunctions(roadName, j1, j2, roadLength);
+						line = br.readLine();						
+					}
+
+				}
+				catch (IOException e)
+				{
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		finally
+		{
+			try// if the file was opened, close it
+			{
+				if (fr != null)
+				fr.close();
+			}
+			catch (IOException ioe)
+			{
+				System.out.println(ioe.getMessage());
+			}
+
+		}
+		for(RoadEntry r:map.getRoads())
+		{
+			System.out.println(r.getRoadName());
+		}
+		for(Node n:map.getNodes())
+		{
+			System.out.print(n.getJunction());
+			System.out.print("Children: ");
+			for(Edge e:n.getAdjencies())
+			{
+				System.out.print(e.getTarget().getJunction()+" , ");
+			}
+			System.out.println("");
+		}
+	}
 
 }
